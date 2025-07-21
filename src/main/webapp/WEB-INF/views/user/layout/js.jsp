@@ -13,4 +13,6 @@
 <script src="${path }/user/js/contact_custom.js"></script>
 
 <script src="${path }/user/js/single_custom.js"></script>
+<script src="${path }/user/js/categories_custom.js"></script>
 
+<script src="${path }/user/plugins/Isotope/isotope.pkgd.min.js"></script>

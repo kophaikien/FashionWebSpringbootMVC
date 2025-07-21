@@ -14,7 +14,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -46,7 +49,37 @@ public class User extends BaseModel implements UserDetails {
 	@Column(name = "description", length = 500, nullable = true)
 	private String description;
 	
-//---------------Mapping many-to-many: tbl_user-to-tbl_role---------------------------
+	@Column(name = "birth_date")
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd") // để binding với input type="date"
+    private Date birthDate;
+	
+public User(Integer id, Date createDate, Date updateDate, String username, String password, String name,
+			String email, String mobile, String address, String avatar, String description, Date birthDate,
+			List<Role> roles, List<SaleOrder> saleOrders) {
+		super(id, createDate, updateDate);
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.email = email;
+		this.mobile = mobile;
+		this.address = address;
+		this.avatar = avatar;
+		this.description = description;
+		this.birthDate = birthDate;
+		this.roles = roles;
+		this.saleOrders = saleOrders;
+	}
+
+public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	//---------------Mapping many-to-many: tbl_user-to-tbl_role---------------------------
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "users")
 	private List<Role> roles = new ArrayList<Role>();
 
@@ -60,30 +93,25 @@ public class User extends BaseModel implements UserDetails {
 		role.getUsers().remove(this);
 		roles.remove(role);
 	}
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "update_by", referencedColumnName = "id")
-	private User userUpdateUser;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "create_by", referencedColumnName = "id")
-	private User userCreateUser;
-	//---------Mapping one-to-many: tbl_user-to-tbl_category create-----------	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, 
-			mappedBy = "userCreateCategory")
-	private List<Category> createCategories = new ArrayList<Category>();
-	
-	//---------Mapping one-to-many: tbl_user-to-tbl_category update-----------	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, 
-			mappedBy = "userUpdateCategory")
-	private List<Category> updateCategories = new ArrayList<Category>();
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "update_by", referencedColumnName = "id")
+//	private User userUpdateUser;
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "create_by", referencedColumnName = "id")
+//	private User userCreateUser;
+//	//---------Mapping one-to-many: tbl_user-to-tbl_category create-----------	
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, 
+//			mappedBy = "userCreateCategory")
+//	private List<Category> createCategories = new ArrayList<Category>();
+//	
+//	//---------Mapping one-to-many: tbl_user-to-tbl_category update-----------	
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, 
+//			mappedBy = "userUpdateCategory")
+//	private List<Category> updateCategories = new ArrayList<Category>();
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	private List<SaleOrder> saleOrders = new ArrayList<SaleOrder>();
 	
-
-	
-
-	
-
 	public String getUsername() {
 		return username;
 	}
@@ -104,42 +132,22 @@ public class User extends BaseModel implements UserDetails {
 		super();
 	}
 
-	public User getUserUpdateUser() {
-		return userUpdateUser;
-	}
+//	public User getUserUpdateUser() {
+//		return userUpdateUser;
+//	}
+//
+//	public void setUserUpdateUser(User userUpdateUser) {
+//		this.userUpdateUser = userUpdateUser;
+//	}
+//
+//	public User getUserCreateUser() {
+//		return userCreateUser;
+//	}
+//
+//	public void setUserCreateUser(User userCreateUser) {
+//		this.userCreateUser = userCreateUser;
+//	}
 
-	public void setUserUpdateUser(User userUpdateUser) {
-		this.userUpdateUser = userUpdateUser;
-	}
-
-	public User getUserCreateUser() {
-		return userCreateUser;
-	}
-
-	public void setUserCreateUser(User userCreateUser) {
-		this.userCreateUser = userCreateUser;
-	}
-
-	public User(Integer id, Date createDate, Date updateDate, Boolean status, String username, String password,
-			String name, String email, String mobile, String address, String avatar, String description,
-			List<Role> roles, User userUpdateUser, User userCreateUser, List<Category> createCategories,
-			List<Category> updateCategories, List<SaleOrder> saleOrders) {
-		super(id, createDate, updateDate, status);
-		this.username = username;
-		this.password = password;
-		this.name = name;
-		this.email = email;
-		this.mobile = mobile;
-		this.address = address;
-		this.avatar = avatar;
-		this.description = description;
-		this.roles = roles;
-		this.userUpdateUser = userUpdateUser;
-		this.userCreateUser = userCreateUser;
-		this.createCategories = createCategories;
-		this.updateCategories = updateCategories;
-		this.saleOrders = saleOrders;
-	}
 
 	public String getName() {
 		return name;
@@ -196,22 +204,22 @@ public class User extends BaseModel implements UserDetails {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
-
-	public List<Category> getCreateCategories() {
-		return createCategories;
-	}
-
-	public void setCreateCategories(List<Category> createCategories) {
-		this.createCategories = createCategories;
-	}
-
-	public List<Category> getUpdateCategories() {
-		return updateCategories;
-	}
-
-	public void setUpdateCategories(List<Category> updateCategories) {
-		this.updateCategories = updateCategories;
-	}
+//
+//	public List<Category> getCreateCategories() {
+//		return createCategories;
+//	}
+//
+//	public void setCreateCategories(List<Category> createCategories) {
+//		this.createCategories = createCategories;
+//	}
+//
+//	public List<Category> getUpdateCategories() {
+//		return updateCategories;
+//	}
+//
+//	public void setUpdateCategories(List<Category> updateCategories) {
+//		this.updateCategories = updateCategories;
+//	}
 
 	public List<SaleOrder> getSaleOrders() {
 		return saleOrders;

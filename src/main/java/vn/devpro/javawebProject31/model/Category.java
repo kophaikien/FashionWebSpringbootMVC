@@ -35,15 +35,15 @@ public class Category extends BaseModel {
 		products.remove(product); 
 		product.setCategory(null);
 	}
-	// mapping many to one: product to category
-		@ManyToOne(fetch = FetchType.EAGER)
-		@JoinColumn(name = "create_by")
-		private User userCreateCategory;
-		
-		// mapping many to one: product to category
-				@ManyToOne(fetch = FetchType.EAGER)
-				@JoinColumn(name = "update_by")
-				private User userUpdateCategory;
+//	// mapping many to one: product to category
+//		@ManyToOne(fetch = FetchType.EAGER)
+//		@JoinColumn(name = "create_by")
+//		private User userCreateCategory;
+//		
+//		// mapping many to one: product to category
+//				@ManyToOne(fetch = FetchType.EAGER)
+//				@JoinColumn(name = "update_by")
+//				private User userUpdateCategory;
 	public String getName() {
 		return name;
 	}
@@ -67,25 +67,24 @@ public class Category extends BaseModel {
 		super();
 	}
 	public Category(Integer id, Date createDate, Date updateDate, Boolean status, String name, String description,
-			List<Product> products, User userCreateCategory, User userUpdateCategory) {
-		super(id, createDate, updateDate, status);
+			List<Product> products) {
+		super(id, createDate, updateDate);
 		this.name = name;
 		this.description = description;
 		this.products = products;
-		this.userCreateCategory = userCreateCategory;
-		this.userUpdateCategory = userUpdateCategory;
+		
 	}
-	public User getUserCreateCategory() {
-		return userCreateCategory;
-	}
-	public void setUserCreateCategory(User userCreateCategory) {
-		this.userCreateCategory = userCreateCategory;
-	}
-	public User getUserUpdateCategory() {
-		return userUpdateCategory;
-	}
-	public void setUserUpdateCategory(User userUpdateCategory) {
-		this.userUpdateCategory = userUpdateCategory;
-	}
+//	public User getUserCreateCategory() {
+//		return userCreateCategory;
+//	}
+//	public void setUserCreateCategory(User userCreateCategory) {
+//		this.userCreateCategory = userCreateCategory;
+//	}
+//	public User getUserUpdateCategory() {
+//		return userUpdateCategory;
+//	}
+//	public void setUserUpdateCategory(User userUpdateCategory) {
+//		this.userUpdateCategory = userUpdateCategory;
+//	}
 	
 }

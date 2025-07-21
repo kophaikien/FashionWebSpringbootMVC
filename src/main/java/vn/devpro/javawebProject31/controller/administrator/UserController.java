@@ -83,9 +83,8 @@ public class UserController {
 		
 		//Lay du lieu trong DB
 		User user = userService.getById(roleId);
-		
-		user.setStatus(false);
-		userService.saveOrUpdate(user);
+		userService.delete(user); 
+//		userService.saveOrUpdate(user);
 		
 		return "redirect:/admin/category/view";
 	}

@@ -1,6 +1,7 @@
 package vn.devpro.javawebProject31.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -57,7 +58,14 @@ public abstract class BaseService <Model extends BaseModel>{
 		Model entity = this.getById(id);
 		delete(entity);
 	}
-	
+	@SuppressWarnings("unchecked")
+	public void executeNativeSql(String sql, Map<String, Object> params) {
+	    Query query = entityManager.createNativeQuery(sql);
+	    for (Map.Entry<String, Object> entry : params.entrySet()) {
+	        query.setParameter(entry.getKey(), entry.getValue());
+	    }
+	    query.executeUpdate();
+	}
 	@SuppressWarnings("unchecked")
 	public List<Model> executeNativeSql(String sql) {
 		try {

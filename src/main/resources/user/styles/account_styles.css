@@ -1,0 +1,36 @@
+.container{ 
+		max-width: 1140px !important;
+	}
+	.btn-acc{ 
+		background-color: #ced4da;
+	}
+	nav .btn-acc:hover,nav  .btn-acc:focus { 
+		background-color: #dbe8fc !important;
+	}
+   /* Custom radio style for the blue dot */
+   input[type="radio"]:checked + label > span {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+   }
+   .radio-circle {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #ced4da;
+    border-radius: 50%;
+    position: relative;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+   }
+   input[type="radio"]:checked + label > .radio-circle::after {
+    content: "";
+    display: block;
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: #0d6efd;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+   }

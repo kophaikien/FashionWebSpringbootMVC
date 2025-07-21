@@ -16,10 +16,16 @@
 	<jsp:include page="/WEB-INF/views/user/layout/css.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/common/variables.jsp"></jsp:include>
 	 <style>
+	 	* a, * p{
+	 		font-family: sans-serif !important; 
+	 	}
         .button_add {
             border: none;
             background-color: #fe4c50;
           
+        }
+        .prouduct_image{ 
+        width: 100% !important; 
         }
         
         .button_add:hover {
@@ -44,38 +50,8 @@
 				<div class="col">
 					<div class="main_slider_content">
 						<h6>Spring / Summer Collection 2017</h6>
-						<h1>Get up to 30% Off New Arrivals</h1>
+						<h1>Giảm Giá đến 30%</h1>
 						<div class="red_button shop_now_button"><a href="#">shop now</a></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Banner -->
-
-	<div class="banner">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-4">
-					<div class="banner_item align-items-center" style="background-image:url(${path}/user/images/banner_1.jpg)">
-						<div class="banner_category">
-							<a href="categories.html">women's</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="banner_item align-items-center" style="background-image:url(${path}/user/images/banner_2.jpg)">
-						<div class="banner_category">
-							<a href="categories.html">accessories's</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="banner_item align-items-center" style="background-image:url(${path}/user/images/banner_3.jpg)">
-						<div class="banner_category">
-							<a href="categories.html">men's</a>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -95,43 +71,43 @@
 					</div>
 				</div>
 			</div>
-			<div class="row align-items-center">
-				<div class="col text-center">
-					<div class="new_arrivals_sorting">
-						<ul class="arrivals_grid_sorting clearfix button-group filters-button-group">
-							<li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked" data-filter="*">all</li>
-							<li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".women">women's</li>
-							<li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".accessories">accessories</li>
-							<li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center" data-filter=".men">men's</li>
-						</ul>
-					</div>
-				</div>
-			</div>
+			
 			<div class="row">
 				<div class="col">
 					<div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
 
 						<!-- Product 1 -->
 					<c:forEach items="${products}" var="product" varStatus="status" >
+					<c:if test="${product.isNew}">
 						<div class="product-item ${product.category.name }">
 							<div class="product discount product_filter">
 								<div class="product_image">
-									<img src="${path }/user/images/product_${status.index + 1}.png" alt="">
+									<img src="${path }/UploadFiles/${product.avatar}" alt="">
 								</div>
 								<div class="favorite favorite_left"></div>
-								<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>${product.salePrice }%</span></div>
+								<c:if test="${product.saleValue.percent > 0 }">
+								<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>${product.saleValue.percent }%</span></div>
+								</c:if>
 								<div class="product_info">
-									<h6 class="product_name"><a href="single.html">${product.name }</a></h6>
-										<div class="product_price">
-										  <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="đ"/>
-										</div>
+									<h6 class="product_name"><a href="${path }/product/${product.id}">${product.name }</a></h6>
+									<c:choose>
+									    <c:when test="${product.salePrice lt product.price && product.salePrice > 0}">
+												<div class="product_price"><fmt:formatNumber value="${product.salePrice}" type="currency" currencySymbol="đ"/>
+												 <span><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="đ"/> 
+												</span></div>
+									    </c:when>
+									    <c:when test="${product.salePrice <= 0 }">
+									
+									   <div class="product_price">
+									    		<fmt:formatNumber value="${product.price}" type="currency" currencySymbol="đ"/> 
+									    		</div>
+									    </c:when>
+									</c:choose>
 								</div>
 							</div>
-								<div class="red_button add_to_cart_button">
-							  		  <button class="button_add" type="button" onclick="addToCart(${product.id },1,'${product.name }')">add to cart</button>
-								</div>							
+							<div class="red_button add_to_cart_button"><a href="${path}/product/${product.id} 	">Xem chi tiết</a></div>
 						</div>
-
+					 </c:if>
 					</c:forEach>
 					</div>
 				</div>
@@ -206,9 +182,19 @@
 						                        <h6 class="product_name">
 						                            <a href="${path }/product/${product.id}">${product.name}</a>
 						                        </h6>
-						                      <div class="product_price">
-												  <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="đ"/>
-												</div>
+						                      <c:choose>
+									    <c:when test="${product.salePrice lt product.price && product.salePrice > 0}">
+												<div class="product_price"><fmt:formatNumber value="${product.salePrice}" type="currency" currencySymbol="đ"/>
+												 <span><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="đ"/> 
+												</span></div>
+									    </c:when>
+									    <c:when test="${product.salePrice <= 0 }">
+									
+									   <div class="product_price">
+									    		<fmt:formatNumber value="${product.price}" type="currency" currencySymbol="đ"/> 
+									    		</div>
+									    </c:when>
+									</c:choose>
 						
 						                        </div>
 						                    </div>
@@ -235,114 +221,17 @@
 
 	<!-- Benefit -->
 
-	<div class="benefit">
-		<div class="container">
-			<div class="row benefit_row">
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>free shipping</h6>
-							<p>Suffered Alteration in Some Form</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>cach on delivery</h6>
-							<p>The Internet Tend To Repeat</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>45 days return</h6>
-							<p>Making it Look Like Readable</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>opening all week</h6>
-							<p>8AM - 09PM</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Blogs -->
-
-	<div class="blogs">
-		<div class="container">
-			<div class="row">
-				<div class="col text-center">
-					<div class="section_title">
-						<h2>Latest Blogs</h2>
-					</div>
-				</div>
-			</div>
-			<div class="row blogs_container">
-				<div class="col-lg-4 blog_item_col">
-					<div class="blog_item">
-						<div class="blog_background" style="background-image:url(images/blog_1.jpg)"></div>
-						<div class="blog_content d-flex flex-column align-items-center justify-content-center text-center">
-							<h4 class="blog_title">Here are the trends I see coming this fall</h4>
-							<span class="blog_meta">by admin | dec 01, 2017</span>
-							<a class="blog_more" href="#">Read more</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 blog_item_col">
-					<div class="blog_item">
-						<div class="blog_background" style="background-image:url(${path}/user/images/blog_2.jpg)"></div>
-						<div class="blog_content d-flex flex-column align-items-center justify-content-center text-center">
-							<h4 class="blog_title">Here are the trends I see coming this fall</h4>
-							<span class="blog_meta">by admin | dec 01, 2017</span>
-							<a class="blog_more" href="#">Read more</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 blog_item_col">
-					<div class="blog_item">
-						<div class="blog_background" style="background-image:url(images/blog_3.jpg)"></div>
-						<div class="blog_content d-flex flex-column align-items-center justify-content-center text-center">
-							<h4 class="blog_title">Here are the trends I see coming this fall</h4>
-							<span class="blog_meta">by admin | dec 01, 2017</span>
-							<a class="blog_more" href="#">Read more</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 
 	<!-- Newsletter -->
 
-	<div class="newsletter">
+	<div class="newsletter" style="padding: 20px 0;" >
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-6">
-					<div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
-						<h4>Newsletter</h4>
-						<p>Subscribe to our newsletter and get 20% off your first purchase</p>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<form action="post">
-						<div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
-							<input id="newsletter_email" type="email" placeholder="Your email" required="required" data-error="Valid email is required.">
-							<button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">subscribe</button>
-						</div>
-					</form>
-				</div>
+				<div style="text-align: center;width:100%">
+				    <h2 style="font-size: 24px; margin-bottom: 10px;">Cảm ơn bạn đã ghé thăm!</h2>
+				    <p style="font-size: 16px; color: #555;">Chúng tôi luôn sẵn sàng mang đến những sản phẩm tốt nhất cho bạn.</p>
+				  </div>
 			</div>
 		</div>
 	</div>
@@ -353,12 +242,17 @@
 	<jsp:include page="/WEB-INF/views/user/layout/js.jsp"></jsp:include>
 	<script type="text/javascript">
 		addToCart = function(_productId, _quantity, _productName) {		
-			
+			let selectedSize = $("input[name='size']:checked").val(); 
+			if (!size){ 
+				alert("Vui lòng chọn size"); 
+				return; 
+			}
 			alert("Thêm "  + _quantity + " sản phẩm '" + _productName + "' vào giỏ hàng ");
 			let data = {
 				id: _productId, //lay theo id
 				quantity: _quantity,
 				name: _productName,
+				size: selectedSize, 
 			};
 				
 			//$ === jQuery

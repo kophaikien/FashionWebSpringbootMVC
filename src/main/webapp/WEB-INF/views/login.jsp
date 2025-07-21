@@ -38,7 +38,7 @@
 						<input class="input100" type="password" name="password" placeholder="Type your password">
 						<span class="focus-input100" data-symbol="&#xf190;"></span>
 					</div>
-					<div class="col d-flex justify-content-between p-20-0 ">
+					<div class="col d-flex justify-content-between p-20-0 " style="margin-bottom: 15px">
 											<!-- Checkbox -->
 											<div class="form-check">
 												<input class="form-check-input" type="checkbox"
@@ -66,7 +66,7 @@
 
 					<div class="flex-col-c p-b-130">
 
-						<a href="#" class="txt2">
+						<a href="${path }/signup" class="txt2">
 							Sign Up
 						</a>
 					</div>

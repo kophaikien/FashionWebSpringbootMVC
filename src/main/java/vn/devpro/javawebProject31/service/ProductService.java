@@ -3,8 +3,13 @@ package vn.devpro.javawebProject31.service;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +17,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import vn.devpro.javawebProject31.dto.Jw31Constants;
+import vn.devpro.javawebProject31.dto.SearchCategoryDTO;
 import vn.devpro.javawebProject31.dto.SearchModel;
 import vn.devpro.javawebProject31.model.Product;
 import vn.devpro.javawebProject31.model.ProductImage;
+import vn.devpro.javawebProject31.model.SaleValue;
+import vn.devpro.javawebProject31.model.Variant;
 
 @Service
 public class ProductService extends BaseService<Product> implements Jw31Constants {
@@ -26,7 +34,7 @@ public class ProductService extends BaseService<Product> implements Jw31Constant
 	}
 	
 	public List<Product> findAllActive() {
-		String sql = "SELECT * FROM tbl_product WHERE status = 1";
+		String sql = "SELECT * FROM tbl_product ";
 		return super.executeNativeSql(sql);
 	}
 	
@@ -79,9 +87,7 @@ public class ProductService extends BaseService<Product> implements Jw31Constant
 					ProductImage productImage = new ProductImage();
 					productImage.setPath("Product/Image/" + image.getOriginalFilename());
 					productImage.setTitle(image.getOriginalFilename());
-					productImage.setCreateDate(new Date());
-					productImage.setStatus(true);
-					
+					productImage.setCreateDate(new Date());					
 					productImage.setProduct(product);
 					product.addRelationalProductImage(productImage);
 				}
@@ -92,6 +98,14 @@ public class ProductService extends BaseService<Product> implements Jw31Constant
 		}
 		if (product.getSalePrice() == null) {
 			product.setSalePrice(BigDecimal.ZERO);
+		}
+		
+		List<Variant> variants = product.getVariants(); 
+		if (!(variants.isEmpty())) { 
+			for (Variant variant : new ArrayList<Variant>(variants)) { 
+				variant.setProduct(product);
+				product.addRelationalVariant(variant);
+			}
 		}
 		return saveOrUpdate(product);
 	}
@@ -118,36 +132,41 @@ public class ProductService extends BaseService<Product> implements Jw31Constant
 	
 			File file = new File(path);
 			avatarFile.transferTo(file);
+			}
+		else { 
+			Product product_old = getById(product.getId()); 
+			product.setAvatar(product_old.getAvartar());
+
 		}
-		
-		//Kiem tra xem co upload images khong?
-		if (isExistFiles(imageFiles)) {//Co upload
-			for (MultipartFile image : imageFiles) {
-				if (isExistFile(image)) {
-					//Luu file vao thu muc Product/Image
-					String path = FOLDER_UPLOAD + "Product/Image/" 
-							+ image.getOriginalFilename();
-			
-					File file = new File(path);
-					image.transferTo(file);
-					//Luu duong dan vao bang tbl_product_image
-					ProductImage productImage = new ProductImage();
-					productImage.setPath("Product/Image/" + image.getOriginalFilename());
-					productImage.setTitle(image.getOriginalFilename());
-					productImage.setCreateDate(new Date());
-					productImage.setStatus(true);
-					
-					productImage.setProduct(product);
-					product.addRelationalProductImage(productImage);
+			//Kiem tra xem co upload images khong?
+			if (isExistFiles(imageFiles)) {//Co upload
+				for (MultipartFile image : imageFiles) {
+					if (isExistFile(image)) {
+						//Luu file vao thu muc Product/Image
+						String path = FOLDER_UPLOAD + "Product/Image/" 
+								+ image.getOriginalFilename();
+				
+						File file = new File(path);
+						image.transferTo(file);
+						//Luu duong dan vao bang tbl_product_image
+						ProductImage productImage = new ProductImage();
+						productImage.setPath("Product/Image/" + image.getOriginalFilename());
+						productImage.setTitle(image.getOriginalFilename());
+						productImage.setCreateDate(new Date());
+						
+						productImage.setProduct(product);
+						product.addRelationalProductImage(productImage);
+					}
 				}
 			}
-		}
-		if (product.getPrice() == null) {
-			product.setPrice(BigDecimal.ZERO);
-		}
-		if (product.getSalePrice() == null) {
-			product.setSalePrice(BigDecimal.ZERO);
-		}
+			if (product.getPrice() == null) {
+				product.setPrice(BigDecimal.ZERO);
+			}
+			if (product.getSalePrice() == null) {
+				product.setSalePrice(BigDecimal.ZERO);
+			}
+			
+			
 		return saveOrUpdate(product);
 	}
 	
@@ -159,10 +178,10 @@ public class ProductService extends BaseService<Product> implements Jw31Constant
 	public List<Product> search(SearchModel searchModel) {
 		String sql = "SELECT * FROM tbl_product p WHERE 1=1";
 		
-		//Tim theo status
-		if (searchModel.getStatus() != 2) {
-			sql += " AND p.status=" + searchModel.getStatus();
-		}
+//		//Tim theo status
+//		if (searchModel.getStatus() != 2) {
+//			sql += " AND p.status=" + searchModel.getStatus();
+//		}
 		
 		//Tim theo catgory
 		if (searchModel.getCategoryId() != 0) {
@@ -172,9 +191,8 @@ public class ProductService extends BaseService<Product> implements Jw31Constant
 		//Tim theo keyword
 		String keyword = searchModel.getKeyword(); 
 		if (keyword != null) {
-			sql += " AND (LOWER(p.name) like '%" + keyword + "%'" +
-					" OR LOWER(p.short_description) like '%" + keyword + "%'" +
-					" OR LOWER(p.seo) like '%" + keyword + "%')";
+			sql += " AND (LOWER(p.name) like '%" + keyword.toLowerCase() + "%'" +
+					" OR LOWER(p.short_description) like '%" + keyword.toLowerCase() + "%')";
 		}
 		
 		//Tim tu ngay den ngay
@@ -187,4 +205,92 @@ public class ProductService extends BaseService<Product> implements Jw31Constant
 		System.out.println(sql);
  		return super.executeNativeSql(sql);
 	}
+	public List<Product> searchSale(SearchModel searchModel) {
+	    String sql = "SELECT * FROM tbl_product p WHERE p.sale_price > 0 AND p.sale_price < p.price";
+
+	    // Lọc theo danh mục
+	    if (searchModel.getCategoryId() != 0) {
+	        sql += " AND p.category_id = " + searchModel.getCategoryId();
+	    }
+
+	    // Lọc theo từ khóa
+	    String keyword = searchModel.getKeyword(); 
+	    if (keyword != null && !keyword.trim().isEmpty()) {
+	        keyword = keyword.toLowerCase();
+	        sql += " AND (LOWER(p.name) LIKE '%" + keyword + "%'" +
+	               " OR LOWER(p.short_description) LIKE '%" + keyword + "%')";
+	    }
+
+	    // Lọc theo ngày tạo (nếu có)
+	    String date1 = searchModel.getBeginDate();
+	    String date2 = searchModel.getEndDate();
+	    if (date1 != null && date2 != null) {
+	        sql += " AND p.create_date BETWEEN '" + date1 + "' AND '" + date2 + "'";
+	    }
+
+	    System.out.println("[SQL SALE] " + sql);
+	    return super.executeNativeSql(sql);
+	}
+
+	public void applyDiscount(Product product) {
+	    BigDecimal originalPrice = product.getPrice();
+
+	    if (product.getSaleValue() != null && product.getSaleValue().getId() != null) {
+	        Integer saleValueId = product.getSaleValue().getId();
+
+	        // Truy vấn từ database
+	        SaleValue fullSaleValue = entityManager.find(SaleValue.class, saleValueId);
+
+	        if (fullSaleValue != null && fullSaleValue.getPercent() != null) {
+	            Integer percent = fullSaleValue.getPercent();
+
+	            if (percent >= 0 && percent <= 100) {
+	                BigDecimal discount = originalPrice.multiply(BigDecimal.valueOf(percent))
+	                        .divide(BigDecimal.valueOf(100));
+	                BigDecimal salePrice = originalPrice.subtract(discount);
+	                product.setSalePrice(salePrice);
+	                return;
+	            }
+	        }
+	    }
+
+	    // Nếu không có giảm giá hợp lệ
+	    product.setSalePrice(originalPrice);
+	}
+	public List<Product> findByIds(Set<Integer> ids) {
+	    if (ids == null || ids.isEmpty()) {
+	        return new ArrayList<>();
+	    }
+
+	    String jpql = "SELECT p FROM Product p WHERE p.id IN :ids";
+	    return entityManager.createQuery(jpql, Product.class)
+	                        .setParameter("ids", ids)
+	                        .getResultList();
+	}
+
+	//category 
+	    public List<SearchCategoryDTO> searchProducts(String category, String keyword) {
+	        String jpql = "SELECT new vn.devpro.javawebProject31.dto.SearchCategoryDTO(" +
+	                      "p.id, p.name, p.avatar, p.price, p.salePrice, c.name, sv.percent) " +
+	                      "FROM Product p " +
+	                      "JOIN p.category c " +
+	                      "LEFT JOIN p.saleValue sv " +
+	                      "WHERE (:category IS NULL OR c.name = :category) " +
+	                      "AND (:keyword IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')))";
+
+	        return entityManager.createQuery(jpql, SearchCategoryDTO.class)
+	            .setParameter("category", (category != null && !category.trim().isEmpty()) ? category : null)
+	            .setParameter("keyword", (keyword != null && !keyword.trim().isEmpty()) ? keyword : null)
+	            .getResultList();
+	    }
+	    
+	    public List<Product> getSaleProducts() {
+	        String jpql = "SELECT p FROM Product p " +
+	                      "WHERE p.status = true " +
+	                      "AND p.salePrice > 0 " +
+	                      "AND p.salePrice < p.price";
+	        return entityManager.createQuery(jpql, Product.class)
+	                            .getResultList();
+	    }
+
 }

@@ -41,7 +41,7 @@ public class Role extends BaseModel implements GrantedAuthority {
 
 	public Role(Integer id, Date createDate, Date updateDate, Boolean status, String name, String description,
 			List<User> users) {
-		super(id, createDate, updateDate, status);
+		super(id, createDate, updateDate);
 		this.name = name;
 		this.description = description;
 		this.users = users;

@@ -20,8 +20,6 @@ public abstract class BaseModel {
     @Column(name = "update_date", nullable = true)
     private Date updateDate;
 
-    @Column(name = "status", nullable = true)
-    private Boolean status = Boolean.TRUE;
 
     // Getters and Setters
     public Integer getId() {
@@ -48,20 +46,14 @@ public abstract class BaseModel {
         this.updateDate = updateDate;
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
+    
 
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-	public BaseModel(Integer id, Date createDate, Date updateDate, Boolean status) {
+	public BaseModel(Integer id, Date createDate, Date updateDate) {
 		super();
 		this.id = id;
 		this.createDate = createDate;
 		this.updateDate = updateDate;
-		this.status = status;
+		
 	}
 
 	public BaseModel() {

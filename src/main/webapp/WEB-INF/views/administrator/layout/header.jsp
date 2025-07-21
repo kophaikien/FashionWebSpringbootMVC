@@ -3,18 +3,14 @@
     <header class="pc-header">
   <div class="header-wrapper"> <!-- [Mobile Media Block] start -->
 <div class="me-auto pc-mob-drp">
-  <ul class="list-unstyled">
+  <%--  <ul class="list-unstyled">
     <!-- ======= Menu collapse Icon ===== -->
     <li class="pc-h-item pc-sidebar-collapse">
       <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
         <i class="ti ti-menu-2"></i>
       </a>
     </li>
-    <li class="pc-h-item pc-sidebar-popup">
-      <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
-        <i class="ti ti-menu-2"></i>
-      </a>
-    </li>
+ 
     <li class="dropdown pc-h-item d-inline-flex d-md-none">
       <a
         class="pc-head-link dropdown-toggle arrow-none m-0"
@@ -40,7 +36,7 @@
         <i data-feather="search" class="icon-search"></i>
         <input type="search" class="form-control" placeholder="Search here. . .">
       </form>
-    </li>
+    </li>--%>
   </ul>
 </div>
 <!-- [Mobile Media Block end] -->
@@ -55,7 +51,7 @@
         aria-haspopup="false"
         aria-expanded="false"
       >
-        <i class="ti ti-mail"></i>
+       
       </a>
       <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
         <div class="dropdown-header d-flex align-items-center justify-content-between">
@@ -68,7 +64,7 @@
             <a class="list-group-item list-group-item-action">
               <div class="d-flex">
                 <div class="flex-shrink-0">
-                  <img src="./assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar">
+             <%--     <img src="./assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar">--%> 
                 </div>
                 <div class="flex-grow-1 ms-1">
                   <span class="float-end text-muted">3:00 AM</span>
@@ -131,8 +127,8 @@
         data-bs-auto-close="outside"
         aria-expanded="false"
       >
-        <img src="./assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar">
-        <span>Stebin Ben</span>
+       <%-- <img src="./assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar">--%> 
+        <span>Nguyễn Kiên</span>
       </a>
       <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
         <div class="dropdown-header">

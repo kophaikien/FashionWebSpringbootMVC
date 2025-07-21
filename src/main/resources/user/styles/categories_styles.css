@@ -1337,11 +1337,13 @@ section
 }
 .product_image
 {
-	width: 100%;
+	width: 219px; 
+	height: 219px; 
 }
 .product_image img
 {
 	width: 100%;
+	height: 100%; 
 }
 .product_info
 {

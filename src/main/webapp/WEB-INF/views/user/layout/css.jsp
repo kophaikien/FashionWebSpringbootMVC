@@ -39,3 +39,4 @@
 	
 <link rel="stylesheet" type="text/css" href="${path}/user/styles/categories_styles.css">
 <link rel="stylesheet" type="text/css" href="${path}/user/styles/categories_reponsive.css">
+

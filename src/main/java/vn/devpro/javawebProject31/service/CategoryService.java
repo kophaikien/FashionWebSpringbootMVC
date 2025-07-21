@@ -19,7 +19,7 @@ public class CategoryService extends BaseService<Category> {
 	}
 	
 	public List<Category> findAllActive() {
-		String sql = "SELECT * FROM tbl_category WHERE status = 1";
+		String sql = "SELECT * FROM tbl_category ";
 		return super.executeNativeSql(sql);
 	}
 	

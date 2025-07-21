@@ -74,7 +74,7 @@ public class LoginController extends BaseController {
 		user.setUsername(userSignup.getUsername());
 		user.setEmail(userSignup.getEmail());
 		user.setMobile(userSignup.getMobile());
-		
+		user.setAvatar("User/avatar/avatar-trang-4.jpg");
 		userService.saveOrUpdate(user);
 		jsonResult.put("code", 400); 
 		jsonResult.put("message", "Dang ky thanh cong, moi ve trang login"); 

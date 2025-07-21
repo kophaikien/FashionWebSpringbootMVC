@@ -86,8 +86,8 @@ public class RoleController {
 		//Lay du lieu trong DB
 		Role role = roleService.getById(roleId);
 		
-		role.setStatus(false);
-		roleService.saveOrUpdate(role);
+		roleService.delete(role);
+//		roleService.saveOrUpdate(role);
 		
 		return "redirect:/admin/category/view";
 	}

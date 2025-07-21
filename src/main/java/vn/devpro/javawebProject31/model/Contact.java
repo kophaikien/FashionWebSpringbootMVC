@@ -30,30 +30,29 @@ public class Contact extends BaseModel{
 	@Column(name = "message", length = 1200, nullable = false)
 	private String message; 
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "create_by")
-	private User userCreateContact; 
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "update_by")
-	private User userUpdateContact;
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "create_by")
+//	private User userCreateContact; 
+//	
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "update_by")
+//	private User userUpdateContact;
 
 	public Contact() {
 		super();
 	}
 
 	public Contact(Integer id, Date createDate, Date updateDate, Boolean status, String firstname, String lastname,
-			String mobile, String email, String address, String message, User userCreateContact,
-			User userUpdateContact) {
-		super(id, createDate, updateDate, status);
+			String mobile, String email, String address, String message) {
+		super(id, createDate, updateDate);
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.mobile = mobile;
 		this.email = email;
 		this.address = address;
 		this.message = message;
-		this.userCreateContact = userCreateContact;
-		this.userUpdateContact = userUpdateContact;
+//		this.userCreateContact = userCreateContact;
+//		this.userUpdateContact = userUpdateContact;
 	}
 
 	public String getFirstname() {
@@ -104,22 +103,22 @@ public class Contact extends BaseModel{
 		this.message = message;
 	}
 
-	public User getUserCreateContact() {
-		return userCreateContact;
-	}
-
-	public void setUserCreateContact(User userCreateContact) {
-		this.userCreateContact = userCreateContact;
-	}
-
-	public User getUserUpdateContact() {
-		return userUpdateContact;
-	}
-
-	public void setUserUpdateContact(User userUpdateContact) {
-		this.userUpdateContact = userUpdateContact;
-	} 
-	
+//	public User getUserCreateContact() {
+//		return userCreateContact;
+//	}
+//
+//	public void setUserCreateContact(User userCreateContact) {
+//		this.userCreateContact = userCreateContact;
+//	}
+//
+//	public User getUserUpdateContact() {
+//		return userUpdateContact;
+//	}
+//
+//	public void setUserUpdateContact(User userUpdateContact) {
+//		this.userUpdateContact = userUpdateContact;
+//	} 
+//	
 	
 	
 } 

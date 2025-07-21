@@ -564,6 +564,7 @@ section
 }
 .navbar_menu li a
 {
+	font-family: sans-serif;
 	display: block;
 	color: #1e1e27;
 	font-size: 13px;

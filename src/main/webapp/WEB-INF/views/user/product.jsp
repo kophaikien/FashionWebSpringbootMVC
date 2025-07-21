@@ -21,8 +21,40 @@
 <link rel="stylesheet" href="${path }/user/plugins/themify-icons/themify-icons.css">
 <link rel="stylesheet" type="text/css" href="${path }/user/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="${path }/user/styles/single_styles.css">
-<link rel="stylesheet" type="text/css" href="${path }/user/styles/single_responsive.css">
+<link rel="stylesheet" type="text/css" href="${path }/user/styles/main_styles.css">
 
+<link rel="stylesheet" type="text/css" href="${path }/user/styles/single_responsive.css">
+<style>
+  
+.size-options {
+  display: flex;
+  gap: 10px;
+}
+
+.size-button {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Ẩn radio input */
+.size-button input[type="radio"] {
+  display: none;
+}
+
+/* Giao diện nút */
+.size-button span {
+  display: inline-block;
+  padding: 10px 15px;
+  color: #000;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Khi được chọn */
+.size-button input[type="radio"]:checked + span {
+  border-bottom: 1px solid #000;
+}
+
+</style>
 </head>
 
 <body>
@@ -83,16 +115,30 @@
 					<div class="free_delivery d-flex flex-row align-items-center justify-content-center">
 						<span class="ti-truck"></span><span>free delivery</span>
 					</div>
-					<div class="original_price">${product.salePrice } %</div>
-					<div class="product_price">${ product.price}</div>
-					<ul class="star_rating">
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star" aria-hidden="true"></i></li>
-						<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-					</ul>
-					
+									<c:choose>
+									    <c:when test="${product.salePrice lt product.price && product.salePrice > 0}">
+												<div class="product_price"><fmt:formatNumber value="${product.salePrice}" type="currency" currencySymbol="đ"/>
+												 <span><fmt:formatNumber value="${product.price}" type="currency" currencySymbol="đ"/> 
+												</span></div>
+									    </c:when>
+									    <c:when test="${product.salePrice <= 0 }">
+									
+									   <div class="product_price">
+									    		<fmt:formatNumber value="${product.price}" type="currency" currencySymbol="đ"/> 
+									    		</div>
+									    </c:when>
+									</c:choose>
+
+					<div class="size-options">
+					<span style="line-height: 44px">Select Size:</span>
+						<c:forEach items="${product.variants}" var="variant">
+						<label class="size-button">
+					      <input type="radio" name="size" value="variant.size" />
+					      <span>${variant.size }</span>
+					    </label>
+						</c:forEach>
+					    
+					  </div>
 					<div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
 						<span>Quantity:</span>
 						<div class="quantity_selector">
@@ -122,29 +168,24 @@
 						<ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
 							<li class="tab active" data-active-tab="tab_1"><span>Description</span></li>
 							<li class="tab" data-active-tab="tab_2"><span>Additional Information</span></li>
-							<li class="tab" data-active-tab="tab_3"><span>Reviews (2)</span></li>
+							<li class="tab" data-active-tab="tab_3"><span>Reviews</span></li>
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col">
-
 					<!-- Tab Description -->
-
 					<div id="tab_1" class="tab_container active">
-    <div class="row align-items-center">
-        <!-- Hình ảnh sản phẩm -->
-        <div class="col-lg-6 text-center">
-            <img src="${path}/UploadFiles/${productImages[0].path}" alt="Product Image" class="img-fluid">
-        </div>
-        <!-- Nội dung mô tả sản phẩm -->
-        <div class="col-lg-6">
-            <h2>${ $product.name }</h2>
-            <p>${ $product.detailDescription }</p>
-        </div>
-    </div>
-</div>
+					    <div class="row align-items-center">
+					        <!-- Nội dung mô tả sản phẩm -->
+					        <div class="col-lg-6">
+					            <h2>${product.name }</h2>
+					            <p>${product.additionalInfo }</p>
+					        </div>
+					       
+					    </div>
+					</div>
 
 					<!-- Tab Additional Info -->
 
@@ -154,8 +195,11 @@
 								<div class="tab_title additional_info_title">
 									<h4>Additional Information</h4>
 								</div>
-								<p>COLOR:<span>Gold, Red</span></p>
-								<p>SIZE:<span>L,M,XL</span></p>
+								<p>SIZE:<span>
+								<c:forEach items="${product.variants }" var="variant" varStatus="status">
+									${variant.size } <c:if test="${!status.last}">, </c:if>
+								</c:forEach>
+								</span></p>
 							</div>
 						</div>
 					</div>
@@ -169,83 +213,55 @@
 
 							<div class="col-lg-6 reviews_col">
 								<div class="tab_title reviews_title">
-									<h4>Reviews (2)</h4>
+									<h4>Reviews </h4>
 								</div>
 
 								<!-- User Review -->
 
-								<div class="user_review_container d-flex flex-column flex-sm-row">
-									<div class="user">
-										<div class="user_pic"></div>
-										<div class="user_rating">
-											<ul class="star_rating">
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-											</ul>
-										</div>
-									</div>
-									<div class="review">
-										<div class="review_date">27 Aug 2016</div>
-										<div class="user_name">Brandon William</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-									</div>
-								</div>
+								<c:forEach var="review" items="${reviewList}">
+								  <div class="user_review_container d-flex flex-column flex-sm-row mb-3">
+								    <div class="user">
+								      <div class="user_pic">
+								        <img alt="Avatar người dùng"
+								             class="rounded-circle"
+								             height="48"
+								             src="${path}/${review.user.avatar}" 
+								             width="48"/>
+								      </div>
+								      <div class="user_rating">
+								        <ul class="star_rating">
+								          <c:set var="rating" value="${review.rating}" />
+								          <c:forEach begin="1" end="5" var="i">
+								            <c:choose>
+								              <c:when test="${rating >= i}">
+								                <li><i class="fa fa-star" style="color:#FFD700;"></i></li>
+								              </c:when>
+								              <c:when test="${rating >= i - 0.5}">
+								                <li><i class="fa fa-star-half-o" style="color:#FFD700;"></i></li>
+								              </c:when>
+								              <c:otherwise>
+								                <li><i class="fa fa-star-o" style="color:#FFD700;"></i></li>
+								              </c:otherwise>
+								            </c:choose>
+								          </c:forEach>
+								        </ul>
+								      </div>
+								    </div>
+								    <div class="review pl-3">
+								      <div class="review_date">
+								        <fmt:formatDate value="${review.reviewDate}" pattern="dd/MM/yyyy"/>
+								      </div>
+								      <div class="user_name">${review.user.name}</div>
+								      <p>${review.comment}</p>
+								    </div>
+								  </div>
+								</c:forEach>
 
-								<!-- User Review -->
-
-								<div class="user_review_container d-flex flex-column flex-sm-row">
-									<div class="user">
-										<div class="user_pic"></div>
-										<div class="user_rating">
-											<ul class="star_rating">
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-											</ul>
-										</div>
-									</div>
-									<div class="review">
-										<div class="review_date">27 Aug 2016</div>
-										<div class="user_name">Brandon William</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-									</div>
-								</div>
 							</div>
 
 							<!-- Add Review -->
 
-							<div class="col-lg-6 add_review_col">
-
-								<div class="add_review">
-									<form id="review_form" action="post">
-										<div>
-											<h1>Add Review</h1>
-											<input id="review_name" class="form_input input_name" type="text" name="name" placeholder="Name*" required="required" data-error="Name is required.">
-											<input id="review_email" class="form_input input_email" type="email" name="email" placeholder="Email*" required="required" data-error="Valid email is required.">
-										</div>
-										<div>
-											<h1>Your Rating:</h1>
-											<ul class="user_star_rating">
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star" aria-hidden="true"></i></li>
-												<li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-											</ul>
-											<textarea id="review_message" class="input_review" name="message"  placeholder="Your Review" rows="4" required data-error="Please, leave us a review."></textarea>
-										</div>
-										<div class="text-left text-sm-right">
-											<button id="review_submit" type="submit" class="red_button review_submit_btn trans_300" value="Submit">submit</button>
-										</div>
-									</form>
-								</div>
-
-							</div>
+							
 
 						</div>
 					</div>
@@ -255,83 +271,98 @@
 		</div>
 
 	</div>
-
-	<!-- Benefit -->
-
-	<div class="benefit">
-		<div class="container">
-			<div class="row benefit_row">
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>free shipping</h6>
-							<p>Suffered Alteration in Some Form</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>cach on delivery</h6>
-							<p>The Internet Tend To Repeat</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>45 days return</h6>
-							<p>Making it Look Like Readable</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 benefit_col">
-					<div class="benefit_item d-flex flex-row align-items-center">
-						<div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
-						<div class="benefit_content">
-							<h6>opening all week</h6>
-							<p>8AM - 09PM</p>
-						</div>
-					</div>
-				</div>
-			</div>
+	<!-- Suggested Products -->
+		<div class="best_sellers">
+		    <div class="container">
+		        <div class="row">
+		            <div class="col text-center">
+		                <div class="section_title new_arrivals_title">
+		                    <h2>Sản phẩm gợi ý cho bạn</h2>
+		                </div>
+		            </div>
+		        </div>
+		        <div class="row">
+		            <div class="col">
+		                <div class="product_slider_container">
+		                    <div class="owl-carousel owl-theme product_slider">
+		                        <c:forEach var="product" items="${suggestedProducts}">
+		                            <div class="owl-item product_slider_item">
+		                                <div class="product-item ${product.category.name}">
+		                                    <div class="product">
+		                                        <div class="product_image" style="height: 200px"; >
+		                                            <img src="${path}/UploadFiles/${product.avatar}" alt="">
+		                                        </div>
+		                                        <div class="favorite favorite_left"></div>
+		                                        <div class="product_info">
+		                                            <h6 class="product_name">
+		                                                <a href="${path}/product/${product.id}">${product.name}</a>
+		                                            </h6>
+		                                            <c:choose>
+		                                                <c:when test="${product.salePrice lt product.price}">
+		                                                    <div class="original_price">
+		                                                        <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="đ"/>
+		                                                    </div>
+		                                                    <div class="product_price">
+		                                                        <fmt:formatNumber value="${product.salePrice}" type="currency" currencySymbol="đ"/>
+		                                                    </div>
+		                                                </c:when>
+		                                                <c:otherwise>
+		                                                    <div class="product_price">
+		                                                        <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="đ"/>
+		                                                    </div>
+		                                                </c:otherwise>
+		                                            </c:choose>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </c:forEach>
+		                    </div>
+		
+		                    <!-- Slider Navigation -->
+		                    <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
+		                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+		                    </div>
+		                    <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
+		                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
 		</div>
-	</div>
-
+	
 	<!-- Newsletter -->
 
-	<div class="newsletter">
+	<div class="newsletter" style="padding: 20px 0;" >
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-6">
-					<div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
-						<h4>Newsletter</h4>
-						<p>Subscribe to our newsletter and get 20% off your first purchase</p>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<form action="post">
-						<div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
-							<input id="newsletter_email" type="email" placeholder="Your email" required="required" data-error="Valid email is required.">
-							<button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">subscribe</button>
-						</div>
-					</form>
-				</div>
+				<div style="text-align: center;width:100%">
+				    <h2 style="font-size: 24px; margin-bottom: 10px;">Cảm ơn bạn đã ghé thăm!</h2>
+				    <p style="font-size: 16px; color: #555;">Chúng tôi luôn sẵn sàng mang đến những sản phẩm tốt nhất cho bạn.</p>
+				  </div>
 			</div>
 		</div>
 	</div>
 		<jsp:include page="/WEB-INF/views/user/layout/js.jsp"></jsp:include>
+			<jsp:include page="/WEB-INF/views/user/layout/footer.jsp"></jsp:include>
+	
 	<script type="text/javascript">
-		addToCart = function(_productId, _productName) {		
-			
-			alert("Thêm "  + $("#quantity_value").text() + " sản phẩm '" + _productName + "' vào giỏ hàng ");
+		addToCart = function(_productId, _productName) {
+			let selectedSize = $("input[name='size']:checked").closest("label").find("span").text().trim();
+			console.log("Size được chọn: " + selectedSize);			
+			let qty = jQuery("#quantity_value").text().trim();
+			if (!selectedSize){ 
+				alert("Vui lòng chọn size"); 
+				return; 
+			}
+			alert("Thêm " + qty + " sản phẩm '" + _productName + "' size: " + selectedSize + " vào giỏ hàng");
+
 			let data = {
 				id: _productId, //lay theo id
-				quantity: $("#quantity_value").text(),
+				quantity: qty,
 				name: _productName,
+				size: selectedSize, 
 			};
 				
 			//$ === jQuery
@@ -354,5 +385,4 @@
 			});
 		}
 	</script>
-
 	</body>

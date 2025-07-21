@@ -4,17 +4,19 @@
 <nav class="pc-sidebar">
   <div class="navbar-wrapper">
     <div class="m-header">
-      <a href="./dashboard/index.html" class="b-brand text-primary">
+ 
         <!-- ========   Change your logo from here   ============ -->
-        <img src="./assets/images/logo-dark.svg" class="img-fluid logo-lg" alt="logo">
-      </a>
+        <div class="logo_container">
+							<a href=""${path}/admin/home/view">colo<span>shop</span></a>
+			</div>
+    
     </div>
     <div class="navbar-content">
       <ul class="pc-navbar">
         <li class="pc-item">
           <a href="./dashboard/index.html" class="pc-link">
             <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
-            <span class="pc-mtext">Dashboard</span>
+            <span class="pc-mtext">Tổng Quan</span>
           </a>
         </li>
 
@@ -23,39 +25,57 @@
           <i class="ti ti-dashboard"></i>
         </li>
         <li class="pc-item">
+          <a href="${path }/admin/revenue/view" class="pc-link">
+            <span class="pc-micon"><i class="fas fa-chart-line"></i></i></span>
+            <span class="pc-mtext">Thống Kê Doanh Thu</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="${path }/admin/profit/view" class="pc-link">
+            <span class="pc-micon"><i class="fas fa-dollar-sign"></i></span>
+            <span class="pc-mtext">Thống Kê Lợi Nhuận</span>
+          </a>
+        </li>
+        <li class="pc-item">
           <a href="${path }/admin/category/view" class="pc-link">
             <span class="pc-micon"><i class="fas fa-list"></i></span>
-            <span class="pc-mtext">Category</span>
+            <span class="pc-mtext">Quản Lý Danh Mục</span>
           </a>
         </li>
         <li class="pc-item">
           <a href="${path }/admin/product/view" class="pc-link">
-            <span class="pc-micon"><i class="fas fa-box-archive"></i></span>
-            <span class="pc-mtext">Product</span>
+            <span class="pc-micon"><i class="fas fa-box-open"></i> </span>
+            <span class="pc-mtext">Quản Lý Sản Phẩm </span>
           </a>
         </li>
         <li class="pc-item">
           <a href="${path }/admin/user/view" class="pc-link">
             <span class="pc-micon"><i class="fas fa-users"></i></span>
-            <span class="pc-mtext">Users</span>
+            <span class="pc-mtext">Quản Lý Tài Khoản</span>
           </a>
         </li>
            <li class="pc-item">
           <a href="${path }/admin/role/view" class="pc-link">
             <span class="pc-micon"><i class="fas fa-user"></i></span>
-            <span class="pc-mtext">Roles</span>
+            <span class="pc-mtext">Phân Quyền</span>
           </a>
         </li>
            <li class="pc-item">
-          <a href="${path }/admin/order/view" class="pc-link">
+          <a href="${path }/admin/saleOrder/view" class="pc-link">
             <span class="pc-micon"><i class="fas fa-file-invoice"></i></span>
-            <span class="pc-mtext">Orders</span>
+            <span class="pc-mtext">Quản Lý Đơn Hàng</span>
           </a>
         </li>
            <li class="pc-item">
           <a href="${path }/admin/contact/view" class="pc-link">
             <span class="pc-micon"><i class="fas fa-address-book"></i></span>
-            <span class="pc-mtext">Customer contact</span>
+            <span class="pc-mtext">Phản Hồi Khách hàng</span>
+          </a>
+        </li>
+        <li class="pc-item">
+          <a href="${path }/admin/saleValue/view" class="pc-link">
+            <span class="pc-micon"><i class="fas fa-ticket-alt"></i></span>
+            <span class="pc-mtext">Quản lý giảm giá</span>
           </a>
         </li>
         <li class="pc-item pc-caption">
@@ -63,18 +83,11 @@
           <i class="ti ti-news"></i>
         </li>
         <li class="pc-item">
-          <a href="./pages/login.html" class="pc-link">
+          <a href="${path}/logout" class="pc-link">
             <span class="pc-micon"><i class="ti ti-lock"></i></span>
-            <span class="pc-mtext">Login</span>
+            <span class="pc-mtext">Đăng xuất</span>
           </a>
         </li>
-        <li class="pc-item">
-          <a href="./pages/register.html" class="pc-link">
-            <span class="pc-micon"><i class="ti ti-user-plus"></i></span>
-            <span class="pc-mtext">Register</span>
-          </a>
-        </li>
-
         <li class="pc-item pc-caption">
           <label>Other</label>
           <i class="ti ti-brand-chrome"></i>

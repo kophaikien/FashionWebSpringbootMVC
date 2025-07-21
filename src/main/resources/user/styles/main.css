@@ -30,7 +30,9 @@
 
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
-
+* p, * a{ 
+	font-family: sans-serif !important; 
+}
 * {
 	margin: 0px; 
 	padding: 0px; 

@@ -79,7 +79,7 @@
                                         		</div>
 	                                    	</div>
 										</div>
-										
+										<%-- 
 										<div class="row">
 	                        		 		<div class="col-md-6">
 												<div class="form-group mb-4">
@@ -98,7 +98,7 @@
 			                                        </sf:select>
                                         		</div>
 	                                    	</div>
-										</div>
+										</div>--%>
 										<div class="row">
 	                        		 		<div class="col-md-6">
 												<div class="form-group mb-4">
@@ -129,7 +129,7 @@
 	                                    	</div>
 										</div>
 										
-										<div class="row">
+									<%-- <div class="row">
 	                                    	
 	                                    	<div class="col-md-10">
 												<div class="form-group mb-4">
@@ -140,7 +140,7 @@
 	                                    	</div>
 	                                    	
 										</div>
-										
+										--%>	
 										
 										<div class="row">
 	                        		 		<div class="col-md-12">

@@ -44,12 +44,12 @@
           <div class="row align-items-center">
             <div class="col-md-12">
               <div class="page-header-title">
-                <h5 class="m-b-10">Product</h5>
+                <h5 class="m-b-10">Sản phẩm</h5>
               </div>
               <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="../dashboard/index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="javascript: void(0)">Category</a></li>
-                <li class="breadcrumb-item" aria-current="page">List Category</li>
+                <li class="breadcrumb-item"><a href="../dashboard/index.html">Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0)">Sản Phẩm</a></li>
+                <li class="breadcrumb-item" aria-current="page">Danh sách sản phẩm</li>
               </ul>
             </div>
           </div>
@@ -79,12 +79,12 @@
 											<div class="col-md-2">
 												<div class="form-group mb-4">
 													<a href="${path }/admin/product/add" role="button"
-														class="btn btn-primary">Add new product</a>
+														class="btn btn-primary">Thêm sản phẩm mới</a>
 												</div>
 											</div>
 											<div class="col-md-4">
 												<div class="form-group mb-4">
-													<h3>Total products: &nbsp ${searchModel.totalItems }</h3>
+													<h3>Tổng số sản phẩm: &nbsp ${searchModel.totalItems }</h3>
 												</div>
 											</div>
 
@@ -109,20 +109,7 @@
 										</div>
 										<!-- Tìm kiếm -->
 										<div class="row">
-											<div class="col-md-2">
-												<div class="form-group mb-4">
-													<!-- 
-													<label for="status">&nbsp;&nbsp;&nbsp;&nbsp;</label>
-													<input type="checkbox" class="form-check-input" id="status" name="status" checked="checked" />
-			                                        <label for="status">Active</label>
-			                                         -->
-													<select class="form-control" id="status" name="status">
-														<option value="2">All</option>
-														<option value="1">Active</option>
-														<option value="0">Inactive</option>
-													</select>
-												</div>
-											</div>
+										
 
 											<div class="col-md-2">
 												<select class="form-control" id="categoryId"
@@ -165,111 +152,73 @@
 											<thead>
 												<tr align="center">
 													<th scope="col">No.</th>
-													<th scope="col">Id</th>
-													<th scope="col">Category</th>
-													<th scope="col">Name</th>
-													<th scope="col">Price</th>
-													<th scope="col">Sale price</th>
+													<th scope="col">Danh mục</th>
+													<th scope="col">Tên</th>
+													<th scope="col">Giá bán</th>
+													<th scope="col">Giá Gốc</th>													
+													<th scope="col">Giá Sale</th>
+													<th scope="col">Tổng số lượng</th>
 													<th scope="col">Avatar</th>
-													<th scope="col">Description</th>
-													<th scope="col">Details</th>
-													<th scope="col">Create by</th>
-													<th scope="col">Update by</th>
-													<th scope="col">Create date</th>
-													<th scope="col">Update date</th>
-													<th scope="col">Status</th>
-													<th scope="col">Is hot</th>
-													<th scope="col">Seo</th>
-													<th scope="col">Actions</th>
+													<th scope="col">Activity</th>
+													
 												</tr>
 											</thead>
 											<tbody>
-												<c:forEach var="product" items="${products }"
+												<c:forEach var="productDTO" items="${productDTOs }"
 													varStatus="loop">
 													<tr>
 														<th scope="row">${loop.index + 1 }</th>
-														<td>${product.id }</td>
-														<td>${product.category.name }</td>
-														<td>${product.name }</td>
+														<td>${productDTO.categoryName }</td>
+														<td>${productDTO.name }</td>
 														<td align="right"><fmt:formatNumber
-																value="${product.price }" minFractionDigits="0"></fmt:formatNumber>
+																value="${productDTO.price }" minFractionDigits="0"></fmt:formatNumber>
 														</td>
-														<td align="right">${product.salePrice }</td>
-
+														<td align="right"><fmt:formatNumber
+																value="${productDTO.originalPrice }" minFractionDigits="0"></fmt:formatNumber>
+														</td>
+														<td align="right"><fmt:formatNumber
+																value="${productDTO.salePrice }" minFractionDigits="0"></fmt:formatNumber></td>
+														<td>${productDTO.totalQuantity }</td>
 														<td><img width="40px" height="40px"
-															src="${path }/UploadFiles/${product.avatar}"
+															src="${path }/UploadFiles/${productDTO.avatar}"
 															class="light-logo"></td>
-															
-
-														<td>${product.shortDescription }</td>
-														<td>${product.detailDescription }</td>
-														<td>${product.userCreateProduct.username }</td>
-														<td>${product.userUpdateProduct.username }</td>
-
-														<td><fmt:formatDate value="${product.createDate }"
+												<%-- 		<td><fmt:formatDate value="${productDTO.createDate }"
 																pattern="dd-MM-yyyy" /></td>
-														<td>${product.updateDate }</td>
-
-														<td><span id="_product_status_${product.id }">
+														<td>${productDTO.updateDate }</td>--%>
+ 														
+													<%-- 	<td><span id="_product_status_${productDTO.id }">
 																<c:choose>
-																	<c:when test="${product.status }">
+																	<c:when test="${productDTO.status }">
 																		<span>Active</span>
 																	</c:when>
 																	<c:otherwise>
 																		<span>Inactive</span>
 																	</c:otherwise>
 																</c:choose>
-														</span></td>
-														<td><span id="_product_isHot_${product.id }">
+														</span></td>--%>
+													<%--	<td><span id="_product_isHot_${productDTO.id }">
 																<c:choose>
-																	<c:when test="${product.isHot }">
+																	<c:when test="${productDTO.isHot }">
 																		<span>Yes</span>
 																	</c:when>
 																	<c:otherwise>
 																		<span>No</span>
 																	</c:otherwise>
 																</c:choose>
-														</span></td>
-														<td>${product.seo }</td>
+														</span></td> --%>
 														<td><a
-															href="${path }/admin/product/edit/${product.id }"
+															href="${path }/admin/product/edit/${productDTO.id }"
 															role="button" class="btn btn-primary">Edit</a> <a
-															href="${path }/admin/product/delete/${product.id }"
+															href="${path }/admin/product/delete/${productDTO.id }"
 															role="button" class="btn btn-secondary">Delete</a></td>
 													</tr>
 												</c:forEach>
 											</tbody>
-											<tfoot>
-												<tr align="center">
-													<th scope="col">No.</th>
-													<th scope="col">Id</th>
-													<th scope="col">Category</th>
-													<th scope="col">Name</th>
-													<th scope="col">Price</th>
-													<th scope="col">Sale price</th>
-													<th scope="col">Avatar</th>
-													<th scope="col">Description</th>
-													<th scope="col">Details</th>
-													<th scope="col">Create by</th>
-													<th scope="col">Update by</th>
-													<th scope="col">Create date</th>
-													<th scope="col">Update date</th>
-													<th scope="col">Status</th>
-													<th scope="col">Is hot</th>
-													<th scope="col">Seo</th>
-													<th scope="col">Actions</th>
-												</tr>
-											</tfoot>
+											
 										</table>
 
 										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group mb-4">
-													<a href="${path }/admin/product/add" role="button"
-														class="btn btn-primary">Add new product</a>
-												</div>
-											</div>
-											<%-- Phan trang --%>
+											
 										<%-- Phan trang --%>
 											<div class="col-md-6">
 												<div class="pagination float-right">
@@ -301,8 +250,7 @@
 			 console.log("Current Page:", ${searchModel.currentPage});
 		        console.log("Total Items:", ${searchModel.totalItems});
 		        console.log("Items per Page:", ${searchModel.sizeOfPage});
-			//Dat gia tri cua status ung voi dieu kien search truoc do
-			$("#status").val(${searchModel.status});
+			//Dat gia tri cua status ung voi dieu kien search truoc 
 			//Dat gia tri cua category ung voi dieu kien search truoc do
 			$("#categoryId").val(${searchModel.categoryId});
 			//Dat gia tri cua keyword ung voi dieu kien search truoc do

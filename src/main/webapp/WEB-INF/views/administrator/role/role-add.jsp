@@ -43,12 +43,12 @@
           <div class="row align-items-center">
             <div class="col-md-12">
               <div class="page-header-title">
-                <h5 class="m-b-10">Role</h5>
+                <h5 class="m-b-10">Phân Quyền</h5>
               </div>
               <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="../dashboard/index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="javascript: void(0)">Role</a></li>
-                <li class="breadcrumb-item" aria-current="page">Add Role</li>
+                <li class="breadcrumb-item"><a href="../dashboard/index.html">Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0)">Phân Quyền</a></li>
+                <li class="breadcrumb-item" aria-current="page">Thêm Quyền</li>
               </ul>
             </div>
           </div>
@@ -59,7 +59,7 @@
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header">
-              <h5>Add Role</h5>
+              <h5>Thêm Quyền </h5>
             </div>
             <div class="page-wrapper">
             <!-- ============================================================== -->
@@ -93,35 +93,16 @@
 	                                    	
 	                        		 		<div class="col-md-6">
 												<div class="form-group mb-4">
-			                                        <label for="name">Role name</label>
+			                                        <label for="name">Tên Quyền</label>
 			                                        <sf:input path="name" type="text" class="form-control" id="name" name="name" placeholder="role name"></sf:input>
                                         		</div>
 	                                    	</div>
 										</div>
 										
-										<div class="row">
+													<div class="row">
 	                        		 		<div class="col-md-6">
 												<div class="form-group mb-4">
-			                                        <label for="role">Create by</label>
-			                                        <sf:select path="userCreateRole.id" class="form-control" id="userCreateRole">
-			                                            <sf:options items="${users }" itemValue="id" itemLabel="username"></sf:options>
-			                                        </sf:select>
-                                        		</div>
-	                                    	</div>
-									
-											<div class="col-md-6">
-												<div class="form-group mb-4">
-			                                        <label for="role">Update by</label>
-			                                        <sf:select path="userUpdateRole.id" class="form-control" id="userUpdateRole">
-			                                            <sf:options items="${users }" itemValue="id" itemLabel="username"></sf:options>
-			                                        </sf:select>
-                                        		</div>
-	                                    	</div>
-										</div>
-										<div class="row">
-	                        		 		<div class="col-md-6">
-												<div class="form-group mb-4">
-			                                        <label for="createdate">Create date</label>
+			                                        <label for="createdate">Ngày Tạo</label>
 			                                        
 			                                        <sf:input path="createDate" class="form-control" type="date" 
 			                                        			id="createDate" name="createDate"></sf:input>
@@ -130,44 +111,20 @@
 									
 											<div class="col-md-6">
 												<div class="form-group mb-4">
-			                                        <label for="updatedate">Update date</label>
+			                                        <label for="updatedate">Ngày Cập Nhập</label>
 			                                       
 			                                        <sf:input path="updateDate" class="form-control" type="date" 
 			                                        			id="updateDate" name="updateDate"></sf:input>
                                         		</div>
 	                                    	</div>
 										</div>
-										
-										<div class="row">
-	                        		 		<div class="col-md-12">
-												<div class="form-group mb-4">
-			                                        <label for="description">Description</label>
-			                                        <sf:textarea path="description" id="description" name="description"
-																class="form-control" rows="3" placeholder="desription..."></sf:textarea>
-                                        		</div>
-	                                    	</div>
-										</div>
-										
-										<div class="row">
-	                                    	
-	                                    	<div class="col-md-10">
-												<div class="form-group mb-4">
-													<label for="status">&nbsp;&nbsp;&nbsp;&nbsp;</label>
-													<sf:checkbox path="status" class="form-check-input" id="status" name="status"></sf:checkbox>
-			                                        <label for="status">Active</label>			                                       
-                                        		</div>
-	                                    	</div>
-	                                    	
-										</div>
-										
-										
 										<div class="row">
 	                        		 		<div class="col-md-12">
 												<div class="form-group mb-4">
 			                                        <a href="${path }/admin/role/view" class="btn btn-secondary active" role="button" aria-pressed="true">
-			                                        	Back to list
+			                                        	Quay Lại
 			                                        </a>
-                                    				<button type="submit" class="btn btn-primary">Save role</button>
+                                    				<button type="submit" class="btn btn-primary">Lưu</button>
                                         		</div>
 	                                    	</div>
 										</div>

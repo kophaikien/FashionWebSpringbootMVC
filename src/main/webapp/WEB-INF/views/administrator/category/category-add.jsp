@@ -80,7 +80,7 @@
 	                                    	</div>
 										</div>
 										
-										<div class="row">
+								<%--		<div class="row">
 	                        		 		<div class="col-md-6">
 												<div class="form-group mb-4">
 			                                        <label for="category">Create by</label>
@@ -99,6 +99,7 @@
                                         		</div>
 	                                    	</div>
 										</div>
+										 --%>
 										<div class="row">
 	                        		 		<div class="col-md-6">
 												<div class="form-group mb-4">
@@ -129,7 +130,7 @@
 	                                    	</div>
 										</div>
 										
-										<div class="row">
+									<%-- <div class="row">
 	                                    	
 	                                    	<div class="col-md-10">
 												<div class="form-group mb-4">
@@ -140,7 +141,7 @@
 	                                    	</div>
 	                                    	
 										</div>
-										
+										--%>	
 										
 										<div class="row">
 	                        		 		<div class="col-md-12">

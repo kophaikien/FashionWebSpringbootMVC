@@ -19,11 +19,46 @@ public class SaleOrderProduct extends BaseModel {
 	@Column(name = "price", nullable = true)
 	private BigDecimal price;
 	
+	@Column(name ="sale_price", nullable = true)
+	private BigDecimal salePrice; 
+	
+	public BigDecimal getSalePrice() {
+		return salePrice;
+	}
+
+	public void setSalePrice(BigDecimal salePrice) {
+		this.salePrice = salePrice;
+	}
+
 	@Column(name = "description", length = 500, nullable = true)
 	private String description;
 	
 	@Column(name = "product_name", length = 300, nullable = true)
 	private String name;
+	
+	@Column(name = "size", nullable = true)
+	private String size; 
+	
+	
+//	public SaleOrderProduct(Integer id, Date createDate, Date updateDate, Boolean status, Integer quantity,
+//			BigDecimal price, String description, String name, String size, Product product, SaleOrder saleOrder) {
+//		super(id, createDate, updateDate, status);
+//		this.quantity = quantity;
+//		this.price = price;
+//		this.description = description;
+//		this.name = name;
+//		this.size = size;
+//		this.product = product;
+//		this.saleOrder = saleOrder;
+//	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
 
 	public String getName() {
 		return name;
@@ -47,16 +82,30 @@ public class SaleOrderProduct extends BaseModel {
 		super();
 	}
 
-	public SaleOrderProduct(Integer id, Date createDate, Date updateDate, Boolean status, Integer quantity,
-			BigDecimal price, String description, String name, Product product, SaleOrder saleOrder) {
-		super(id, createDate, updateDate, status);
+public SaleOrderProduct(Integer id, Date createDate, Date updateDate, Boolean status, Integer quantity,
+			BigDecimal price, BigDecimal salePrice, String description, String name, String size, Product product,
+			SaleOrder saleOrder) {
+		super(id, createDate, updateDate);
 		this.quantity = quantity;
 		this.price = price;
+		this.salePrice = salePrice;
 		this.description = description;
 		this.name = name;
+		this.size = size;
 		this.product = product;
 		this.saleOrder = saleOrder;
 	}
+
+//	public SaleOrderProduct(Integer id, Date createDate, Date updateDate, Boolean status, Integer quantity,
+//			BigDecimal price, String description, String name, Product product, SaleOrder saleOrder) {
+//		super(id, createDate, updateDate, status);
+//		this.quantity = quantity;
+//		this.price = price;
+//		this.description = description;
+//		this.name = name;
+//		this.product = product;
+//		this.saleOrder = saleOrder;
+//	}
 
 	public Integer getQuantity() {
 		return quantity;

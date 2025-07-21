@@ -68,13 +68,9 @@
                 </button>
             </div>
             <div class="text-center text-gray-600 mb-4">
-                Or <a href="${path }/login" class="text-blue-500">Login</a> Using
+                Or <a href="${path }/login" class="text-blue-500">Login</a> 
             </div>
-            <div class="flex justify-center space-x-4">
-                <a href="#" class="text-blue-600"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="text-blue-400"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-red-600"><i class="fab fa-google"></i></a>
-            </div>
+           
         </form>
     </div>
     

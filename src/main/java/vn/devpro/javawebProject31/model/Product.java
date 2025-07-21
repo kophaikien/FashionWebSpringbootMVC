@@ -15,6 +15,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.core.Base64Variants;
+
+/**
+ * @author kinn1
+ *
+ */
 @Entity
 @Table(name = "tbl_product")
 public class Product  extends BaseModel{
@@ -28,46 +34,134 @@ public class Product  extends BaseModel{
 	@Column(name = "price", nullable = true)
 	private BigDecimal price = BigDecimal.ZERO; 
 	
+	@Column(name = "ori_price", nullable = true)
+	private BigDecimal originalPrice = BigDecimal.ZERO; 
+	
+	
 	@Column(name = "sale_price", nullable = true)
 	private BigDecimal salePrice = BigDecimal.ZERO; 
 	
-	@Column(name = "short_description", nullable = true) 
-	private String shortDescription; 
+	@Column(name = "short_description", length = 500, nullable = true) 
+	private String shortDescription;  
 	
-	@Column(name = "detail_description", nullable = true)
-	private String detailDescription; 
+	@Column(name = "additional_info",length = 500, nullable = true)
+	private String additionalInfo; 
 	
 	@Column(name= "is_hot", nullable = true)
 	private Boolean isHot = Boolean.FALSE; 
 	
-	@Column(name = "seo", length = 1000, nullable = true)
-	private String seo; 
+	public BigDecimal getOriginalPrice() {
+		return originalPrice;
+	}
+	public void setOriginalPrice(BigDecimal originalPrice) {
+		this.originalPrice = originalPrice;
+	}
+
+	@Column(name = "is_new", nullable = true)
+	private Boolean IsNew = Boolean.FALSE; 
+	public String getAdditionalInfo() {
+		return additionalInfo;
+	}
+	public void setAdditionalInfo(String additionalInfo) {
+		this.additionalInfo = additionalInfo;
+	}
+	
+	public Product(Integer id, Date createDate, Date updateDate, String name, String avatar, BigDecimal price,
+			BigDecimal originalPrice, BigDecimal salePrice, String shortDescription, String additionalInfo,
+			Boolean isHot, Boolean isNew, Category category, SaleValue saleValue, List<ProductImage> productImages,
+			List<Variant> variants, List<SaleOrderProduct> saleOrderProducts) {
+		super(id, createDate, updateDate);
+		this.name = name;
+		this.avatar = avatar;
+		this.price = price;
+		this.originalPrice = originalPrice;
+		this.salePrice = salePrice;
+		this.shortDescription = shortDescription;
+		this.additionalInfo = additionalInfo;
+		this.isHot = isHot;
+		IsNew = isNew;
+		this.category = category;
+		this.saleValue = saleValue;
+		this.productImages = productImages;
+		this.variants = variants;
+		this.saleOrderProducts = saleOrderProducts;
+	}
+	
+	public Boolean getIsNew() {
+		return IsNew;
+	}
+	public void setIsNew(Boolean isNew) {
+		IsNew = isNew;
+	}
 
 	// mapping many to one: product to category
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id")
 	private Category category;
 //
+	// mapping many to one: product to sale_value
+		@ManyToOne(fetch = FetchType.EAGER)
+		@JoinColumn(name = "sale_value_id")
+		private SaleValue saleValue;
+//	public Product(Integer id, Date createDate, Date updateDate, Boolean status, String name, String avatar,
+//		BigDecimal price, BigDecimal salePrice, String shortDescription, Boolean isHot, Category category,
+//		SaleValue saleValue, List<ProductImage> productImages, List<Variant> variants,
+//		List<SaleOrderProduct> saleOrderProducts) {
+//	super(id, createDate, updateDate, status);
+//	this.name = name;
+//	this.avatar = avatar;
+//	this.price = price;
+//	this.salePrice = salePrice;
+//	this.shortDescription = shortDescription;
+//	this.isHot = isHot;
+//	this.category = category;
+//	this.saleValue = saleValue;
+//	this.productImages = productImages;
+//	this.variants = variants;
+////	this.userUpdateProduct = userUpdateProduct;
+////	this.userCreateProduct = userCreateProduct;
+//	this.saleOrderProducts = saleOrderProducts;
+//}
+	public SaleValue getSaleValue() {
+			return saleValue;
+		}
+		public void setSaleValue(SaleValue saleValue) {
+			this.saleValue = saleValue;
+		}
+
+	//
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
 	private List<ProductImage> productImages= new ArrayList<ProductImage>();
 	// methods add and remove elements in relational product list
-		public void addRelationalProductImage(ProductImage productImage) {
+	public void addRelationalProductImage(ProductImage productImage) {
 			productImages.add(productImage); 
 			productImage.setProduct(this);
 		}
-		public void removeRelationalProductImage(ProductImage productImage) {
+	public void removeRelationalProductImage(ProductImage productImage) {
 			productImages.remove(productImage); 
 			productImage.setProduct(null);
 		}
-
-	//mapping many-to-one: product-to-user-create
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "update_by", referencedColumnName = "id")
-	private User userUpdateProduct; 
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "create_by", referencedColumnName = "id")
-	private User userCreateProduct; 
+	// mappign one to many: product-to-variant 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product", orphanRemoval = true)
+	private List<Variant> variants = new ArrayList<Variant>(); 
+	//
+	public void addRelationalVariant(Variant variant) {
+		variants.add(variant); 
+		variant.setProduct(this);
+	}
+	public void removeRelationalVariant(Variant variant) {
+		variants.remove(variant); 
+		variant.setProduct(null);
+	}
+//	//mapping many-to-one: product-to-user-create
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "update_by", referencedColumnName = "id")
+//	private User userUpdateProduct; 
+//	
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "create_by", referencedColumnName = "id")
+//	private User userCreateProduct; 
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product" )
 	private List<SaleOrderProduct> saleOrderProducts= new ArrayList<SaleOrderProduct>();
@@ -85,12 +179,20 @@ public class Product  extends BaseModel{
 	
 	
 	
-	public String getDetailDescription() {
-		return detailDescription;
+	
+	public List<Variant> getVariants() {
+		return variants;
 	}
-	public void setDetailDescription(String detailDescription) {
-		this.detailDescription = detailDescription;
+	public void setVariants(List<Variant> variants) {
+		this.variants = variants;
 	}
+	public List<SaleOrderProduct> getSaleOrderProducts() {
+		return saleOrderProducts;
+	}
+	public void setSaleOrderProducts(List<SaleOrderProduct> saleOrderProducts) {
+		this.saleOrderProducts = saleOrderProducts;
+	}
+	
 	public String getAvatar() {
 		return avatar;
 	}
@@ -103,38 +205,19 @@ public class Product  extends BaseModel{
 	public void setProductImages(List<ProductImage> productImages) {
 		this.productImages = productImages;
 	}
-	public User getUserUpdateProduct() {
-		return userUpdateProduct;
-	}
-	public void setUserUpdateProduct(User userUpdateProduct) {
-		this.userUpdateProduct = userUpdateProduct;
-	}
-	public User getUserCreateProduct() {
-		return userCreateProduct;
-	}
-	public void setUserCreateProduct(User userCreateProduct) {
-		this.userCreateProduct = userCreateProduct;
-	}
-	public Product(Integer id, Date createDate, Date updateDate, Boolean status, String name, String avatar,
-			BigDecimal price, BigDecimal salePrice, String shortDescription, String detailDescription, Boolean isHot,
-			String seo, Category category, List<ProductImage> productImages, User userUpdateProduct,
-			User userCreateProduct) {
-		super(id, createDate, updateDate, status);
-		this.name = name;
-		this.avatar = avatar;
-		this.price = price;
-		this.salePrice = salePrice;
-		this.shortDescription = shortDescription;
-		this.detailDescription = detailDescription;
-		this.isHot = isHot;
-		this.seo = seo;
-		this.category = category;
-		this.productImages = productImages;
-		this.userUpdateProduct = userUpdateProduct;
-		this.userCreateProduct = userCreateProduct;
-	}
-		
-	
+//	public User getUserUpdateProduct() {
+//		return userUpdateProduct;
+//	}
+//	public void setUserUpdateProduct(User userUpdateProduct) {
+//		this.userUpdateProduct = userUpdateProduct;
+//	}
+//	public User getUserCreateProduct() {
+//		return userCreateProduct;
+//	}
+//	public void setUserCreateProduct(User userCreateProduct) {
+//		this.userCreateProduct = userCreateProduct;
+//	}
+//	
 	// mapping many to many 
 	
 	public String getName() {
@@ -177,13 +260,9 @@ public class Product  extends BaseModel{
 		this.shortDescription = shortDescription;
 	}
 
-	public String getDetailDesciption() {
-		return detailDescription;
-	}
 
-	public void setDetailDesciption(String detailDesciption) {
-		this.detailDescription = detailDesciption;
-	}
+
+	
 
 	public Boolean getIsHot() {
 		return isHot;
@@ -191,14 +270,6 @@ public class Product  extends BaseModel{
 
 	public void setIsHot(Boolean isHot) {
 		this.isHot = isHot;
-	}
-
-	public String getSeo() {
-		return seo;
-	}
-
-	public void setSeo(String seo) {
-		this.seo = seo;
 	}
 
 	public Category getCategory() {
@@ -212,6 +283,7 @@ public class Product  extends BaseModel{
 	public Product() {
 		super();
 	}
+	
 
 
 	

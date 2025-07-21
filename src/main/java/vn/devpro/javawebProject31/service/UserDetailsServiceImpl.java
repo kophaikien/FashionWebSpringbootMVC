@@ -16,7 +16,7 @@ public class UserDetailsServiceImpl extends BaseService<User> implements UserDet
 	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// Lay user trong tbl_user theo username (username tu form login)
-		String sql = "select * from tbl_user u where u.username='" + username + "' and u.status=1"; 
+		String sql = "select * from tbl_user u where u.username='" + username +"'"; 
 		User user = this.getEntityByNativeSQL(sql); 
 		if (user != null) {
 			return user; 

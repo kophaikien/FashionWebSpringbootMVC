@@ -41,12 +41,12 @@
           <div class="row align-items-center">
             <div class="col-md-12">
               <div class="page-header-title">
-                <h5 class="m-b-10">Product</h5>
+                <h5 class="m-b-10">Phân Quyền</h5>
               </div>
               <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="../dashboard/index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="javascript: void(0)">Category</a></li>
-                <li class="breadcrumb-item" aria-current="page">List Category</li>
+                <li class="breadcrumb-item"><a href="../dashboard/index.html">Trang Chủ</a></li>
+                <li class="breadcrumb-item"><a href="javascript: void(0)">Phân Quyền</a></li>
+                <li class="breadcrumb-item" aria-current="page">Danh Sách Các Quyền</li>
               </ul>
             </div>
           </div>
@@ -57,7 +57,7 @@
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header">
-              <h5>List Role</h5>
+              <h5>Danh Sách Các Quyền</h5>
             </div>
             <div class="page-wrapper">
             <div class="container-fluid">
@@ -69,7 +69,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
+                            <%--   <div class="row">
                                     <!-- Column -->
                                     <div class="col-md-6 col-lg-3 col-xlg-3">
                                         <div class="card card-hover">
@@ -107,7 +107,7 @@
                                         </div>
                                     </div>
                                     <!-- Column -->
-                                </div>
+                                </div>--%> 
                                 <div class="table-responsive">
                                 	
                                	<div class="row">
@@ -139,13 +139,9 @@
                                             <tr>
                                             	<th scope="col">No.</th>
                                                 <th scope="col">Id</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Create by</th>
-                                                <th scope="col">Update by</th>
-                                                <th scope="col">Create date</th>
-                                                <th scope="col">Update date</th>
-                                                <th scope="col">Status</th>  
-                                                <th scope="col">Description</th> 
+                                                <th scope="col">Tên</th>
+                                                <th scope="col">Ngày Tạo </th>
+                                                <th scope="col">Ngày Cập Nhật</th>
                                                 <th scope="col">Action</th>                                             
                                             </tr>
                                         </thead>
@@ -155,17 +151,13 @@
 		                                        	<td>${loop.index + 1 }</td>
 		                                        	<td>${role.id }</td>
 		                                        	<td>${role.name }</td>
-		                                        	<td>${role.userCreateRole.username }</td>
-		                                        	<td>${role.userUpdateRole.username }</td>
 		                                        	<td>
 		                                        		<fmt:formatDate value="${role.createDate }" pattern="dd-MM-yyyy"/>
 		                                        	</td>
 		                                        	<td>
 		                                        		<fmt:formatDate value="${role.updateDate }" pattern="dd-MM-yyyy"/>
 		                                        	</td>
-		                                        	<td>${role.status }</td>
-	                                        		<td>${role.description }</td>
-	                                        		<td>
+ 	                                        		<td>
 	                                        			<a href="${path }/admin/role/edit/${role.id }" role="button" 
 	                                                							class="btn btn-primary">Edit</a>
 	                                                	<a href="${path }/admin/role/delete/${role.id }" role="button" 
@@ -183,7 +175,6 @@
                                                 <th scope="col">Update by</th>
                                                 <th scope="col">Create date</th>
                                                 <th scope="col">Update date</th>
-                                                <th scope="col">Status</th>
                                                 <th scope="col">Description</th>
                                                 <th scope="col">Action</th>
                                             </tr>

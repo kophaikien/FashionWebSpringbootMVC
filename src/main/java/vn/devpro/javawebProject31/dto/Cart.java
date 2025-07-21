@@ -9,9 +9,17 @@ public class Cart {
 	private ArrayList<CartProduct> cartProducts = new ArrayList<CartProduct>();
 
 	//Tim hang trong gio
+	public int findProductByIdAndSize(int productId, String size) {
+		for (int index = 0; index < this.cartProducts.size(); index++) {
+			if (cartProducts.get(index).getId() == productId && cartProducts.get(index).getSize().equals(size)) {
+				return index;
+			}
+		}
+		return -1;
+	}
 	public int findProductById(int productId) {
 		for (int index = 0; index < this.cartProducts.size(); index++) {
-			if (cartProducts.get(index).getId() == productId) {
+			if (cartProducts.get(index).getId() == productId ) {
 				return index;
 			}
 		}

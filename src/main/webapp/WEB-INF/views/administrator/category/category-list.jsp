@@ -95,11 +95,10 @@
                                             	<th scope="col">No.</th>
                                                 <th scope="col">Id</th>
                                                 <th scope="col">Name</th>    
-                                                <th scope="col">Create by</th>
-                                                <th scope="col">Update by</th>
-                                                <th scope="col">Create date</th>
+                                             <%--  <th scope="col">Create by</th>--%>  
+                                             <%--   <th scope="col">Create date</th>--%> 
                                                 <th scope="col">Update date</th>
-                                                <th scope="col">Status</th>  
+                                               <%--  <th scope="col">Status</th>  --%> 
                                                 <th scope="col">Description</th>
                                                 <th scope="col">Actions</th>                                              
                                             </tr>
@@ -110,15 +109,15 @@
 		                                        	<td>${loop.index + 1 }</td>
 		                                        	<td>${category.id }</td>
 		                                        	<td>${category.name }</td>
-		                                        	<td>${category.userCreateCategory.username }</td>
-		                                        	<td>${category.userUpdateCategory.username }</td>
+		                                        <%-- 	<td>${category.userCreateCategory.username }</td>--%>
+		                                        <%--	<td>${category.userUpdateCategory.username }</td>--%>
 		                                        	<td>
 		                                        		<fmt:formatDate value="${category.createDate }" pattern="dd-MM-yyyy"/>
 		                                        	</td>
 		                                        	<td>
 		                                        		<fmt:formatDate value="${category.updateDate }" pattern="dd-MM-yyyy"/>
 		                                        	</td>
-		                                        	<td>
+		                                      <%--  	<td>
 		                                        		<c:choose>
 		                                        			<c:when test="${category.status }">
 		                                        				<span>Active</span>
@@ -127,8 +126,7 @@
 		                                        				<span>Inactive</span>
 		                                        			</c:otherwise>
 		                                        		</c:choose>
-		                                        		</td>
-	                                        		<td>${category.description }</td>
+		                                        		</td>--%>
 	                                        		<td>
 	                                        			<a href="${path }/admin/category/edit/${category.id }" role="button" 
 	                                                							class="btn btn-primary">Edit</a>
@@ -145,9 +143,9 @@
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Create by</th>
                                                 <th scope="col">Update by</th>
-                                                <th scope="col">Create date</th>
-                                                <th scope="col">Update date</th>
-                                                <th scope="col">Status</th>
+                                            <%--<th scope="col">Create date</th>--%> 
+                                           <%-- <th scope="col">Update date</th>--%> 
+                                               <%--   <th scope="col">Status</th>--%>
                                                 <th scope="col">Description</th>
                                                 <th scope="col">Actions</th>
                                             </tr>

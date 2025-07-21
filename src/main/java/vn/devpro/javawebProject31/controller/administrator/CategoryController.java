@@ -108,9 +108,8 @@ public class CategoryController extends BaseController {
 		
 		//Lay du lieu trong DB
 		Category category = categoryService.getById(categoryId);
-		
-		category.setStatus(false);
-		categoryService.saveOrUpdate(category);
+		categoryService.delete(category);
+//		categoryService.saveOrUpdate(category);
 		
 		return "redirect:/admin/category/view";
 	}

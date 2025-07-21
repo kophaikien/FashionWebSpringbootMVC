@@ -47,7 +47,7 @@ public class SecureConfigurer extends WebSecurityConfigurerAdapter{
 		.and()
 		
 		//cau hinh phan logout
-		.logout().logoutUrl("/logout").logoutSuccessUrl("/index").invalidateHttpSession(true)
+		.logout().logoutUrl("/logout").logoutSuccessUrl("/login").invalidateHttpSession(true)
 		.deleteCookies("JSESSIONID")
 		
 		.and().rememberMe().key("uniqueAndSecret").tokenValiditySeconds(86400);

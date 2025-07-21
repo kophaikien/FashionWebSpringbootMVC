@@ -16,7 +16,7 @@ public class UserService extends BaseService<User> {
 	}
 	
 	public List<User> findAllActive() {
-		String sql = "SELECT * FROM tbl_user WHERE status = 1";
+		String sql = "SELECT * FROM tbl_user  ";
 		return super.executeNativeSql(sql);
 	}
 	

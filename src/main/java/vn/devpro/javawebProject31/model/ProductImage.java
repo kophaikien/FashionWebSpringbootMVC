@@ -26,7 +26,7 @@ public class ProductImage  extends BaseModel{
 
 	public ProductImage(Integer id, Date createDate, Date updateDate, Boolean status, String title, String path,
 			Product product) {
-		super(id, createDate, updateDate, status);
+		super(id, createDate, updateDate);
 		this.title = title;
 		this.path = path;
 		this.product = product;

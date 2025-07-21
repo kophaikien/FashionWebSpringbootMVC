@@ -2,8 +2,10 @@ package vn.devpro.javawebProject31.controller.administrator;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,16 +20,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import vn.devpro.javawebProject31.Mapper.ProductMapper;
 import vn.devpro.javawebProject31.controller.BaseController;
 import vn.devpro.javawebProject31.dto.Jw31Constants;
+import vn.devpro.javawebProject31.dto.ProductDTO;
 import vn.devpro.javawebProject31.dto.SearchModel;
 import vn.devpro.javawebProject31.model.Category;
 import vn.devpro.javawebProject31.model.Product;
 import vn.devpro.javawebProject31.model.ProductImage;
+import vn.devpro.javawebProject31.model.SaleValue;
 import vn.devpro.javawebProject31.model.User;
+import vn.devpro.javawebProject31.model.Variant;
 import vn.devpro.javawebProject31.service.CategoryService;
 import vn.devpro.javawebProject31.service.ProductImageService;
 import vn.devpro.javawebProject31.service.ProductService;
+import vn.devpro.javawebProject31.service.SaleValueService;
 import vn.devpro.javawebProject31.service.UserService;
 
 @Controller
@@ -43,6 +50,9 @@ public class ProductController extends BaseController implements Jw31Constants {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired 
+	private SaleValueService saleValueService; 
+	
 	@RequestMapping(value = "view", method = RequestMethod.GET)
 	public String view(final Model model,
 			final HttpServletRequest request) {
@@ -50,15 +60,12 @@ public class ProductController extends BaseController implements Jw31Constants {
 		SearchModel searchModel = new SearchModel();
 		
 		//Tim kiem theo status
-		searchModel.setStatus(2); //Chon all
-		String str = request.getParameter("status");
-		if (str != null && !StringUtils.isEmpty(str)) {
-			searchModel.setStatus(Integer.parseInt(str));
-		}
+		
+		
 		
 		//Tim theo category
 		searchModel.setCategoryId(0); //All categories
-		str = request.getParameter("categoryId");
+		String str = request.getParameter("categoryId");
 		if (str != null && !StringUtils.isEmpty(str)) {
 			searchModel.setCategoryId(Integer.parseInt(str));
 		}
@@ -85,8 +92,10 @@ public class ProductController extends BaseController implements Jw31Constants {
 		model.addAttribute("categories", categories);
 		
 		List<Product> allProducts = productService.search(searchModel);
-		
-		//Tinh toan phan trang
+		List<ProductDTO> allProductDTOs = allProducts.stream()
+										.map(ProductMapper::productIntoProductDTO)
+										.collect(Collectors.toList()); 
+		//Tinh toan phan trangD
 		searchModel.setCurrentPage(1); //Mac dinh la 1
 		//Lay trang hien tai
 		str = request.getParameter("currentPage");
@@ -98,15 +107,15 @@ public class ProductController extends BaseController implements Jw31Constants {
 		str = request.getParameter("totalItems"); //tong so sp truoc tim kiem
 		if (str != null && !StringUtils.isEmpty(str)) {
 			int totalItems = Integer.parseInt(str);
-			if (totalItems != allProducts.size()) {//Tim kiem moi thi lai ve trang 1
+			if (totalItems != allProductDTOs.size()) {//Tim kiem moi thi lai ve trang 1
 				searchModel.setCurrentPage(1);
 			}
 		}
 		
-		searchModel.setTotalItems(allProducts.size());
+		searchModel.setTotalItems(allProductDTOs.size());
 		searchModel.setSizeOfPage(SIZE_OF_PAGE);
-		int totalPages = allProducts.size() / SIZE_OF_PAGE;
-		if (allProducts.size() % SIZE_OF_PAGE > 0) {
+		int totalPages = allProductDTOs.size() / SIZE_OF_PAGE;
+		if (allProductDTOs.size() % SIZE_OF_PAGE > 0) {
 			totalPages++;
 		}
 		searchModel.setTotalPages(totalPages);
@@ -117,9 +126,9 @@ public class ProductController extends BaseController implements Jw31Constants {
 		if (lastIndex > allProducts.size()) {
 			lastIndex = allProducts.size();
 		}
-		List<Product> products = allProducts.subList(firstIndex, lastIndex);
+		List<ProductDTO> productDTOs = allProductDTOs.subList(firstIndex, lastIndex);
 		
-		model.addAttribute("products", products);
+		model.addAttribute("productDTOs", productDTOs);
 		model.addAttribute("searchModel", searchModel);
 		
 		return "administrator/product/product-list";
@@ -146,10 +155,10 @@ public class ProductController extends BaseController implements Jw31Constants {
 			@RequestParam("avatarFile") MultipartFile avatarFile,
 			@RequestParam("imageFiles") MultipartFile[] imageFiles
 			) throws IOException {
-		
+		productService.applyDiscount(product);
 		productService.saveProduct(product, avatarFile, imageFiles);
 		
-		return "redirect:/admin/product/add";
+		return "redirect:/admin/product/add"; 
 	}
 	
 	@RequestMapping(value = "edit/{productId}", method = RequestMethod.GET)
@@ -160,6 +169,8 @@ public class ProductController extends BaseController implements Jw31Constants {
 		//product.setUserUpdateProduct(loginedUser);
 		model.addAttribute("product", product);
 		
+		List<SaleValue> saleValues = saleValueService.findAllActive(); 
+		model.addAttribute("saleValues", saleValues); 
 		List<Category> categories = categoryService.findAllActive();
 		model.addAttribute("categories", categories);
 		
@@ -172,10 +183,21 @@ public class ProductController extends BaseController implements Jw31Constants {
 	@RequestMapping(value = "edit-save", method = RequestMethod.POST)
 	public String saveEditProduct(@ModelAttribute("product") Product product,
 			@RequestParam("avatarFile") MultipartFile avatarFile,
-			@RequestParam("imageFiles") MultipartFile[] imageFiles
+			@RequestParam("imageFiles") MultipartFile[] imageFiles 
 			) throws IOException {
+		Product productDb = productService.getById(product.getId()); 
+		productDb.getVariants().clear();
+		productDb.setSaleValue(product.getSaleValue());
+		productService.applyDiscount(productDb);
+		for (Variant v : product.getVariants()) {
+	        // Check nếu dữ liệu đầy đủ
+	        if (v.getSize() != null && v.getSku() != null && v.getQuantity() != null) {
+	            v.setProduct(productDb); // liên kết ngược
+	            productDb.getVariants().add(v); // thêm lại
+	        }
+	    }
 		
-		productService.saveEditProduct(product, avatarFile, imageFiles);
+		productService.saveEditProduct(productDb, avatarFile, imageFiles );
 		
 		return "redirect:/admin/product/view";
 	}
@@ -207,9 +229,8 @@ public class ProductController extends BaseController implements Jw31Constants {
 			productImage.setProduct(product);
 			product.removeRelationalProductImage(productImage);
 		}
-//		productService.delete(product); //xoa han
-		product.setStatus(false);
-		productService.saveOrUpdate(product);
+		productService.delete(product); //xoa han
+//		productService.saveOrUpdate(product);
 		
 		return "redirect:/admin/product/view";
 	}

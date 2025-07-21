@@ -2,7 +2,6 @@ package vn.devpro.javawebProject31.dto;
 
 public class SearchModel {
 	
-	private int status;
 	private int categoryId;
 	private String keyword;
 	
@@ -18,10 +17,9 @@ public class SearchModel {
 		super();
 	}	
 		
-	public SearchModel(int status, int categoryId, String keyword, String beginDate, String endDate, int sizeOfPage,
+	public SearchModel( int categoryId, String keyword, String beginDate, String endDate, int sizeOfPage,
 			int currentPage, int totalItems, int totalPages) {
 		super();
-		this.status = status;
 		this.categoryId = categoryId;
 		this.keyword = keyword;
 		this.beginDate = beginDate;
@@ -34,12 +32,6 @@ public class SearchModel {
 
 
 
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
-	}
 	public int getCategoryId() {
 		return categoryId;
 	}
